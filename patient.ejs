@@ -130,7 +130,7 @@
                             </div>
                         <% } else { %>
                             <% patients.forEach(function(patient) { %>
-                                <div class="patient-row" data-patient-id="<%= patient.patient_id %>" data-appointment-id="<%= patient.appointment_id %>">
+                                <div class="patient-row" data-patient-id="<%= patient.patient_id %>" data-appointment-id="<%= patient.appointment_id || '' %>">
                                     <div class="patient-info-section">
                                         <div class="patient-avatar"><%= patient.name.charAt(0) %></div>
                                         <div class="patient-info">
@@ -319,62 +319,71 @@
         });
     });
 
-    // Therapy form submission
-    document.querySelectorAll('.therapy-form').forEach(form => {
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const patientId = this.getAttribute('data-patient-id');
-            const patientRow = document.querySelector(`[data-patient-id="${patientId}"]`);
-            const appointmentId = patientRow.getAttribute('data-appointment-id');
-            
-            const therapyData = {
-                patient_id: patientId,
-                appointment_id: appointmentId,
-                doctor_id: new URLSearchParams(window.location.search).get('doctor_id'),
-                therapy_name: formData.get('therapy_name') === 'other' ? formData.get('other_therapy') : formData.get('therapy_name'),
-                duration_minutes: parseInt(formData.get('duration_minutes')),
-                notes: formData.get('notes')
-            };
+    // Therapy form submission - UPDATED with better appointment_id handling
+document.querySelectorAll('.therapy-form').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const patientId = this.getAttribute('data-patient-id');
+        const patientRow = document.querySelector(`[data-patient-id="${patientId}"]`);
+        const appointmentId = patientRow.getAttribute('data-appointment-id');
+        
+        // Validate appointment_id - allow it to be empty
+        const validAppointmentId = appointmentId && appointmentId !== '' ? parseInt(appointmentId) : null;
+        
+        const therapyData = {
+            patient_id: parseInt(patientId),
+            appointment_id: validAppointmentId,
+            doctor_id: parseInt(new URLSearchParams(window.location.search).get('doctor_id')),
+            therapy_name: formData.get('therapy_name') === 'other' ? formData.get('other_therapy') : formData.get('therapy_name'),
+            duration_minutes: parseInt(formData.get('duration_minutes')),
+            notes: formData.get('notes')
+        };
 
-            // Validate duration
-            if (therapyData.duration_minutes < 1 || therapyData.duration_minutes > 480) {
-                alert('Please enter a valid duration between 1 and 480 minutes.');
-                return;
+        // Validate required fields
+        if (!therapyData.therapy_name || !therapyData.duration_minutes) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        // Validate duration
+        if (therapyData.duration_minutes < 1 || therapyData.duration_minutes > 480) {
+            alert('Please enter a valid duration between 1 and 480 minutes.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/add-therapy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(therapyData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Therapy added successfully!');
+                const modal = document.getElementById(`therapy-modal-${patientId}`);
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                this.reset();
+                
+                // Hide other therapy input if it was shown
+                const otherInput = document.getElementById(`other-therapy-${patientId}`);
+                otherInput.style.display = 'none';
+                otherInput.required = false;
+            } else {
+                alert('Error adding therapy: ' + result.message);
             }
-
-            try {
-                const response = await fetch('/add-therapy', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(therapyData)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('Therapy added successfully!');
-                    const modal = document.getElementById(`therapy-modal-${patientId}`);
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                    this.reset();
-                    
-                    // Hide other therapy input if it was shown
-                    const otherInput = document.getElementById(`other-therapy-${patientId}`);
-                    otherInput.style.display = 'none';
-                    otherInput.required = false;
-                } else {
-                    alert('Error adding therapy: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error adding therapy. Please try again.');
-            }
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error adding therapy. Please try again.');
+        }
     });
+});
 
     // Add hover effects for better UX
     patientRows.forEach(row => {
