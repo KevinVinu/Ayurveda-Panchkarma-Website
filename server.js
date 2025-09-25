@@ -47,18 +47,43 @@ app.post("/login", (req, res) => {
   });
 });
 // Add therapy route
+// Add therapy route - UPDATED with better error handling
 app.post("/add-therapy", (req, res) => {
     const { patient_id, doctor_id, appointment_id, therapy_name, duration_minutes, notes } = req.body;
+
+    // Validate required fields
+    if (!patient_id || !doctor_id || !therapy_name || !duration_minutes) {
+        return res.json({ 
+            success: false, 
+            message: 'Missing required fields: patient_id, doctor_id, therapy_name, and duration_minutes are required' 
+        });
+    }
+
+    // If appointment_id is empty or invalid, set it to NULL
+    const validAppointmentId = appointment_id && !isNaN(appointment_id) && appointment_id !== '' 
+        ? parseInt(appointment_id) 
+        : null;
 
     const sql = `
         INSERT INTO therapy_details (patient_id, doctor_id, appointment_id, therapy_name, therapy_description, duration_minutes, notes) 
         VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     
-    db.query(sql, [patient_id, doctor_id, appointment_id, therapy_name, therapy_name, duration_minutes, notes], (err, results) => {
+    db.query(sql, [
+        parseInt(patient_id), 
+        parseInt(doctor_id), 
+        validAppointmentId, 
+        therapy_name, 
+        therapy_name, 
+        parseInt(duration_minutes), 
+        notes || ''
+    ], (err, results) => {
         if (err) {
-            console.error(err);
-            return res.json({ success: false, message: err.message });
+            console.error('Database error:', err);
+            return res.json({ 
+                success: false, 
+                message: 'Database error: ' + err.message 
+            });
         }
 
         // Log activity
@@ -67,14 +92,21 @@ app.post("/add-therapy", (req, res) => {
             VALUES (?, ?, ?)
         `;
         
-        db.query(activitySql, [doctor_id, patient_id, `Therapy added: ${therapy_name} for ${duration_minutes} minutes`], (err) => {
+        db.query(activitySql, [
+            parseInt(doctor_id), 
+            parseInt(patient_id), 
+            `Therapy added: ${therapy_name} for ${duration_minutes} minutes`
+        ], (err) => {
             if (err) console.error('Error logging activity:', err);
             
-            res.json({ success: true, message: 'Therapy added successfully', therapy_id: results.insertId });
+            res.json({ 
+                success: true, 
+                message: 'Therapy added successfully', 
+                therapy_id: results.insertId 
+            });
         });
     });
 });
-
 
 // Dashboard route// Appointments route
 app.get("/appointments", (req, res) => {
