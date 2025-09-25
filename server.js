@@ -46,6 +46,34 @@ app.post("/login", (req, res) => {
     }
   });
 });
+// Add therapy route
+app.post("/add-therapy", (req, res) => {
+    const { patient_id, doctor_id, appointment_id, therapy_name, duration_minutes, notes } = req.body;
+
+    const sql = `
+        INSERT INTO therapy_details (patient_id, doctor_id, appointment_id, therapy_name, therapy_description, duration_minutes, notes) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    db.query(sql, [patient_id, doctor_id, appointment_id, therapy_name, therapy_name, duration_minutes, notes], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.json({ success: false, message: err.message });
+        }
+
+        // Log activity
+        const activitySql = `
+            INSERT INTO activities (doctor_id, patient_id, activity_type) 
+            VALUES (?, ?, ?)
+        `;
+        
+        db.query(activitySql, [doctor_id, patient_id, `Therapy added: ${therapy_name} for ${duration_minutes} minutes`], (err) => {
+            if (err) console.error('Error logging activity:', err);
+            
+            res.json({ success: true, message: 'Therapy added successfully', therapy_id: results.insertId });
+        });
+    });
+});
 
 
 // Dashboard route// Appointments route
