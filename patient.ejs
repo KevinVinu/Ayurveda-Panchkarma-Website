@@ -130,11 +130,11 @@
                             </div>
                         <% } else { %>
                             <% patients.forEach(function(patient) { %>
-                                <div class="patient-row">
+                                <div class="patient-row" data-patient-id="<%= patient.patient_id %>" data-appointment-id="<%= patient.appointment_id %>">
                                     <div class="patient-info-section">
                                         <div class="patient-avatar"><%= patient.name.charAt(0) %></div>
                                         <div class="patient-info">
-                                            <div class="patient-name"><%= patient.name %></div>
+                                            <div class="patient-name clickable"><%= patient.name %></div>
                                             <div class="patient-details">
                                                 <%= patient.age %> years • <%= patient.gender %> • <%= patient.disease %>
                                             </div>
@@ -177,6 +177,49 @@
                                         </button>
                                     </div>
                                 </div>
+
+                                <!-- Therapy Modal for each patient -->
+                                <div class="therapy-modal" id="therapy-modal-<%= patient.patient_id %>">
+                                    <div class="therapy-modal-content">
+                                        <div class="therapy-modal-header">
+                                            <h3>Add Therapy for <%= patient.name %></h3>
+                                            <span class="therapy-modal-close">&times;</span>
+                                        </div>
+                                        <div class="therapy-modal-body">
+                                            <form class="therapy-form" data-patient-id="<%= patient.patient_id %>">
+                                                <div class="form-group">
+                                                    <label for="therapy-name-<%= patient.patient_id %>">Therapy Name</label>
+                                                    <select id="therapy-name-<%= patient.patient_id %>" name="therapy_name" class="therapy-select" required>
+                                                        <option value="">Select a therapy...</option>
+                                                        <option value="Oil Massage">Oil Massage</option>
+                                                        <option value="Warm Bath">Warm Bath</option>
+                                                        <option value="Steam Therapy">Steam Therapy</option>
+                                                        <option value="Shirodhara">Shirodhara</option>
+                                                        <option value="Abhyanga">Abhyanga</option>
+                                                        <option value="Panchakarma">Panchakarma</option>
+                                                        <option value="Nasya">Nasya</option>
+                                                        <option value="Basti">Basti</option>
+                                                        <option value="Raktamokshana">Raktamokshana</option>
+                                                        <option value="other">Other (Specify)</option>
+                                                    </select>
+                                                    <input type="text" id="other-therapy-<%= patient.patient_id %>" name="other_therapy" class="other-therapy-input" placeholder="Specify other therapy" style="display: none;">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="therapy-duration-<%= patient.patient_id %>">Duration (minutes)</label>
+                                                    <input type="number" id="therapy-duration-<%= patient.patient_id %>" name="duration_minutes" min="1" max="480" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="therapy-notes-<%= patient.patient_id %>">Notes</label>
+                                                    <textarea id="therapy-notes-<%= patient.patient_id %>" name="notes" placeholder="Add any notes about this therapy session..."></textarea>
+                                                </div>
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn-primary">Add Therapy</button>
+                                                    <button type="button" class="btn-secondary therapy-modal-close">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             <% }); %>
                         <% } %>
                     </div>
@@ -185,57 +228,185 @@
         </div>
     </div>
 
-    <script>
-        // Search functionality
-        const searchInput = document.querySelector('.search-input');
-        const filterSelect = document.querySelector('.filter-select');
-        const patientRows = document.querySelectorAll('.patient-row');
+   <script>
+    // Search functionality
+    const searchInput = document.querySelector('.search-input');
+    const filterSelect = document.querySelector('.filter-select');
+    const patientRows = document.querySelectorAll('.patient-row');
 
-        function filterPatients() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const statusFilter = filterSelect.value.toLowerCase();
+    function filterPatients() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusFilter = filterSelect.value.toLowerCase();
 
-            patientRows.forEach(row => {
-                const patientName = row.querySelector('.patient-name').textContent.toLowerCase();
-                const patientDetails = row.querySelector('.patient-details').textContent.toLowerCase();
-                const statusBadge = row.querySelector('.status-badge');
-                const patientStatus = statusBadge.textContent.toLowerCase();
+        patientRows.forEach(row => {
+            const patientName = row.querySelector('.patient-name').textContent.toLowerCase();
+            const patientDetails = row.querySelector('.patient-details').textContent.toLowerCase();
+            const statusBadge = row.querySelector('.status-badge');
+            const patientStatus = statusBadge.textContent.toLowerCase();
 
-                const matchesSearch = patientName.includes(searchTerm) || patientDetails.includes(searchTerm);
-                const matchesStatus = !statusFilter || patientStatus.includes(statusFilter);
+            const matchesSearch = patientName.includes(searchTerm) || patientDetails.includes(searchTerm);
+            const matchesStatus = !statusFilter || patientStatus.includes(statusFilter);
 
-                if (matchesSearch && matchesStatus) {
-                    row.style.display = 'flex';
-                } else {
-                    row.style.display = 'none';
+            if (matchesSearch && matchesStatus) {
+                row.style.display = 'flex';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', filterPatients);
+    filterSelect.addEventListener('change', filterPatients);
+
+    // Therapy Modal functionality
+    document.querySelectorAll('.patient-name.clickable').forEach(nameElement => {
+        nameElement.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const patientRow = nameElement.closest('.patient-row');
+            const patientId = patientRow.getAttribute('data-patient-id');
+            const modal = document.getElementById(`therapy-modal-${patientId}`);
+            
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        });
+    });
+
+    // Close modal functionality
+    document.querySelectorAll('.therapy-modal-close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modal = this.closest('.therapy-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        document.querySelectorAll('.therapy-modal').forEach(modal => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }
+        });
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.therapy-modal').forEach(modal => {
+                if (modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
                 }
             });
         }
+    });
 
-        searchInput.addEventListener('input', filterPatients);
-        filterSelect.addEventListener('change', filterPatients);
+    // Show/hide other therapy input
+    document.querySelectorAll('.therapy-select').forEach(select => {
+        select.addEventListener('change', function() {
+            const patientId = this.id.split('-')[2];
+            const otherInput = document.getElementById(`other-therapy-${patientId}`);
+            if (this.value === 'other') {
+                otherInput.style.display = 'block';
+                otherInput.required = true;
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.required = false;
+            }
+        });
+    });
 
-        // Add hover effects for better UX
-        patientRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                const patientName = row.querySelector('.patient-name');
-                patientName.style.color = '#4f46e5';
-            });
+    // Therapy form submission
+    document.querySelectorAll('.therapy-form').forEach(form => {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const patientId = this.getAttribute('data-patient-id');
+            const patientRow = document.querySelector(`[data-patient-id="${patientId}"]`);
+            const appointmentId = patientRow.getAttribute('data-appointment-id');
+            
+            const therapyData = {
+                patient_id: patientId,
+                appointment_id: appointmentId,
+                doctor_id: new URLSearchParams(window.location.search).get('doctor_id'),
+                therapy_name: formData.get('therapy_name') === 'other' ? formData.get('other_therapy') : formData.get('therapy_name'),
+                duration_minutes: parseInt(formData.get('duration_minutes')),
+                notes: formData.get('notes')
+            };
 
-            row.addEventListener('mouseleave', () => {
-                const patientName = row.querySelector('.patient-name');
-                patientName.style.color = '#111827';
-            });
+            // Validate duration
+            if (therapyData.duration_minutes < 1 || therapyData.duration_minutes > 480) {
+                alert('Please enter a valid duration between 1 and 480 minutes.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/add-therapy', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(therapyData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Therapy added successfully!');
+                    const modal = document.getElementById(`therapy-modal-${patientId}`);
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    this.reset();
+                    
+                    // Hide other therapy input if it was shown
+                    const otherInput = document.getElementById(`other-therapy-${patientId}`);
+                    otherInput.style.display = 'none';
+                    otherInput.required = false;
+                } else {
+                    alert('Error adding therapy: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error adding therapy. Please try again.');
+            }
+        });
+    });
+
+    // Add hover effects for better UX
+    patientRows.forEach(row => {
+        row.addEventListener('mouseenter', () => {
+            const patientName = row.querySelector('.patient-name');
+            patientName.style.color = '#4f46e5';
+            patientName.style.cursor = 'pointer';
         });
 
-        // Action button functionality
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                // Add dropdown menu or modal functionality here
-                console.log('Action button clicked');
-            });
+        row.addEventListener('mouseleave', () => {
+            const patientName = row.querySelector('.patient-name');
+            patientName.style.color = '#111827';
         });
-    </script>
+    });
+
+    // Action button functionality
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Add dropdown menu or modal functionality here
+            console.log('Action button clicked');
+        });
+    });
+
+    // Prevent form submission on Enter key in input fields
+    document.querySelectorAll('.therapy-form input').forEach(input => {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 </body>
 </html>
