@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PanchaFlow • Patients</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="patient.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-logo-icon">
+                        <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="sidebar-title">PanchaFlow</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="sidebar-nav-item" href="/dashboard?doctor_id=<%= doctor.doctor_id %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a class="sidebar-nav-item active" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Patients</span>
+                </a>
+                <a class="sidebar-nav-item" href="/appointments?doctor_id=<%= doctor.doctor_id %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M8 2v4"></path>
+                        <path d="M16 2v4"></path>
+                        <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                        <path d="M3 10h18"></path>
+                    </svg>
+                    <span>Appointments</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+                    </svg>
+                    <span>Therapy Tracking</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M16 7h6v6"></path>
+                        <path d="m22 7-8.5 8.5-5-5L2 17"></path>
+                    </svg>
+                    <span>Progress</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
+                        <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>
+                    </svg>
+                    <span>Notifications</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-nav-icon-svg">
+                        <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Feedback</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer"></div>
+        </aside>
+
+        <div class="main-content">
+            <header class="header">
+                <div class="header-container">
+                    <div class="header-left"></div>
+                    <div class="header-right">
+                        <span class="header-doctor-name">Dr. <%= doctor.name %></span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main">
+                <div class="page-header">
+                    <div class="page-header-content">
+                        <h1>Patient Management</h1>
+                        <p>Manage patient records and treatment history</p>
+                    </div>
+                </div>
+
+                <section class="search-section">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" class="search-input" placeholder="Search patients by name or condition...">
+                        </div>
+                        <select class="filter-select">
+                            <option value="">All Patients</option>
+                            <option value="consultation">Consultation Scheduled</option>
+                            <option value="completed">Completed</option>
+                            <option value="active">Active Treatment</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section class="patients-section">
+                    <div class="patients-table-header">
+                        <div class="header-patient">Patient</div>
+                        <div class="header-status">Status</div>
+                        <div class="header-practitioner">Practitioner</div>
+                        <div class="header-actions"></div>
+                    </div>
+
+                    <div class="patients-list">
+                        <% if (patients.length === 0) { %>
+                            <div class="no-patients">
+                                <p>No patients found. Patients will appear here once appointments are confirmed.</p>
+                            </div>
+                        <% } else { %>
+                            <% patients.forEach(function(patient) { %>
+                                <div class="patient-row">
+                                    <div class="patient-info-section">
+                                        <div class="patient-avatar"><%= patient.name.charAt(0) %></div>
+                                        <div class="patient-info">
+                                            <div class="patient-name"><%= patient.name %></div>
+                                            <div class="patient-details">
+                                                <%= patient.age %> years • <%= patient.gender %> • <%= patient.disease %>
+                                            </div>
+                                            <div class="patient-contact">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon">
+                                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                                </svg>
+                                                <%= patient.phone %>
+                                            </div>
+                                            <div class="patient-email">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon">
+                                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                                </svg>
+                                                <%= patient.email %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <% if (patient.appointment_status === 'completed' || new Date(patient.appointment_date) < new Date()) { %>
+                                            <span class="status-badge completed">Completed</span>
+                                        <% } else if (patient.appointment_status === 'confirmed') { %>
+                                            <span class="status-badge consultation">Consultation Scheduled</span>
+                                        <% } else if (patient.appointment_status === 'pending') { %>
+                                            <span class="status-badge pending">Pending</span>
+                                        <% } else { %>
+                                            <span class="status-badge consultation">Consultation Scheduled</span>
+                                        <% } %>
+                                    </div>
+                                    <div class="practitioner-section">
+                                        <span class="practitioner-name">Dr. <%= patient.doctor_name %></span>
+                                    </div>
+                                    <div class="patient-actions">
+                                        <button class="action-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="1"></circle>
+                                                <circle cx="19" cy="12" r="1"></circle>
+                                                <circle cx="5" cy="12" r="1"></circle>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        const filterSelect = document.querySelector('.filter-select');
+        const patientRows = document.querySelectorAll('.patient-row');
+
+        function filterPatients() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusFilter = filterSelect.value.toLowerCase();
+
+            patientRows.forEach(row => {
+                const patientName = row.querySelector('.patient-name').textContent.toLowerCase();
+                const patientDetails = row.querySelector('.patient-details').textContent.toLowerCase();
+                const statusBadge = row.querySelector('.status-badge');
+                const patientStatus = statusBadge.textContent.toLowerCase();
+
+                const matchesSearch = patientName.includes(searchTerm) || patientDetails.includes(searchTerm);
+                const matchesStatus = !statusFilter || patientStatus.includes(statusFilter);
+
+                if (matchesSearch && matchesStatus) {
+                    row.style.display = 'flex';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterPatients);
+        filterSelect.addEventListener('change', filterPatients);
+
+        // Add hover effects for better UX
+        patientRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                const patientName = row.querySelector('.patient-name');
+                patientName.style.color = '#4f46e5';
+            });
+
+            row.addEventListener('mouseleave', () => {
+                const patientName = row.querySelector('.patient-name');
+                patientName.style.color = '#111827';
+            });
+        });
+
+        // Action button functionality
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Add dropdown menu or modal functionality here
+                console.log('Action button clicked');
+            });
+        });
+    </script>
+</body>
+</html>

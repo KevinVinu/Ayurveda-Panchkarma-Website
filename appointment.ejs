@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PanchaFlow • Appointments</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="Appointment.css" rel="stylesheet">
+</head> 
+<body class="body">
+    <div class="container">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="activity" class="sidebar-logo-icon"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+                </div>
+                <div>
+                    <div class="sidebar-title">Ayursutra</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="sidebar-nav-item" href="/dashboard?doctor_id=<%= doctor.doctor_id %>">
+                    <span class="sidebar-nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="sidebar-nav-icon-svg"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    </span>
+                    <span class="sidebar-nav-text">Dashboard</span>
+                </a>
+                <a class="sidebar-nav-item" href="/patients?doctor_id=<%= doctor.doctor_id %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" class="sidebar-nav-icon-svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                    <span class="sidebar-nav-text">Patients</span>
+                </a>
+                <a class="sidebar-nav-item active" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar" class="sidebar-nav-icon-svg"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <span class="sidebar-nav-text">Appointments</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="activity" class="sidebar-nav-icon-svg"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+                    <span class="sidebar-nav-text">Therapy Tracking</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="sidebar-nav-icon-svg"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
+                    <span class="sidebar-nav-text">Progress</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bell" class="sidebar-nav-icon-svg"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+                    <span class="sidebar-nav-text">Notifications</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-square" class="sidebar-nav-icon-svg"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>
+                    <span class="sidebar-nav-text">Feedback</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer"></div>
+        </aside>
+
+        <!-- Main -->
+        <div class="main-content">
+            <!-- Top bar -->
+            <header class="header">
+                <div class="header-container">
+                    <div class="header-left">
+                        <button id="menuBtn" class="header-menu-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="panel-left-open" class="header-menu-icon"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path d="m14 9 3 3-3 3"></path></svg>
+                        </button>
+                    </div>
+                    <div class="header-right">
+                        <span class="header-doctor-name">Dr. <%= doctor.name %></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="main">
+                <div>
+                    <h1 class="main-title">Appointment Scheduling</h1>
+                    <p class="main-subtitle">Manage therapy sessions and consultations</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Calendar Card -->
+                    <div class="calendar-card">
+                        <div class="calendar-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="calendar-icon"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                            <span class="calendar-title">Calendar</span>
+                        </div>
+
+                        <div class="calendar-nav">
+                            <button class="calendar-nav-btn" id="prevMonth">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                            </button>
+                            <div class="calendar-month" id="monthYear"></div>
+                            <button class="calendar-nav-btn" id="nextMonth">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Calendar will be generated here -->
+                        </div>
+                    </div>
+
+                    <!-- Today's Schedule Card -->
+                    <div class="schedule-card">
+                        <div class="schedule-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="schedule-icon"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                            <span class="schedule-title">Today's Schedule</span>
+                        </div>
+                        <div class="schedule-date" id="scheduleDate">
+                            <%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %> • 
+                            <%= appointments.length %> appointments
+                        </div>
+
+                        <% if (appointments.length === 0) { %>
+                            <div class="no-appointments">
+                                <p>No appointments scheduled for today</p>
+                            </div>
+                        <% } else { %>
+                            <% appointments.forEach(function(appointment) { %>
+                                <div class="appointment-item" data-appointment-id="<%= appointment.appointment_id %>">
+                                    <div class="appointment-header">
+                                        <div class="appointment-avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="appointment-user-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        </div>
+                                        <div class="appointment-info">
+                                            <div class="appointment-name"><%= appointment.patient_name %></div>
+                                            <div class="appointment-treatment"><%= appointment.therapy_type %></div>
+                                        </div>
+                                        <div class="appointment-status status-<%= appointment.status %>"><%= appointment.status %></div>
+                                    </div>
+
+                                    <div class="appointment-details">
+                                        <div class="appointment-detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="appointment-detail-icon"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                                            <%= new Date(appointment.appointment_date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) %>
+                                        </div>
+                                        <div class="appointment-detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="appointment-detail-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                            Dr. <%= appointment.doctor_name %>
+                                        </div>
+                                        <div class="appointment-detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="appointment-detail-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                            Room <%= appointment.appointment_id % 3 + 1 %>
+                                        </div>
+                                        <div class="appointment-detail">
+                                            Disease: <%= appointment.disease %>
+                                        </div>
+                                        <div class="appointment-detail">
+                                            Age: <%= appointment.age %> • Weight: <%= appointment.weight %>kg • Gender: <%= appointment.gender %>
+                                        </div>
+                                    </div>
+
+                                    <div class="appointment-notes">
+                                        Contact: <%= appointment.phone %> | Email: <%= appointment.email %>
+                                    </div>
+
+                                    <div class="appointment-actions">
+                                        <% if (appointment.status === 'pending') { %>
+                                            <button class="btn btn-primary confirm-btn" data-id="<%= appointment.appointment_id %>">Confirm</button>
+                                            <button class="btn btn-secondary cancel-btn" data-id="<%= appointment.appointment_id %>">Cancel</button>
+                                        <% } else if (appointment.status === 'confirmed') { %>
+                                            <button class="btn btn-secondary cancel-btn" data-id="<%= appointment.appointment_id %>">Cancel</button>
+                                            <span class="status-badge confirmed-badge">Confirmed</span>
+                                        <% } else if (appointment.status === 'cancelled') { %>
+                                            <span class="status-badge cancelled-badge">Cancelled</span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Calendar functionality
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        const months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        const dayHeaders = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+        function generateCalendar(month, year) {
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+            
+            const calendarGrid = document.getElementById('calendarGrid');
+            const monthYear = document.getElementById('monthYear');
+            
+            monthYear.textContent = `${months[month]} ${year}`;
+            calendarGrid.innerHTML = '';
+
+            // Add day headers
+            dayHeaders.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.classList.add('calendar-day-header');
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+
+            // Add empty cells for days before the first day of the month
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('calendar-day', 'other-month');
+                dayCell.textContent = daysInPrevMonth - i;
+                calendarGrid.appendChild(dayCell);
+            }
+
+            // Add days of the current month
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('calendar-day');
+                dayCell.textContent = day;
+                
+                // Highlight today's date
+                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+                    dayCell.classList.add('today');
+                }
+                
+                calendarGrid.appendChild(dayCell);
+            }
+
+            // Add days from next month to fill the grid
+            const totalCells = calendarGrid.children.length - 7;
+            const cellsInLastRow = totalCells % 7;
+            const remainingCells = cellsInLastRow === 0 ? 0 : 7 - cellsInLastRow;
+            
+            for (let day = 1; day <= remainingCells && remainingCells > 0; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('calendar-day', 'other-month');
+                dayCell.textContent = day;
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        // Event listeners for navigation
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentMonth, currentYear);
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        });
+
+        // Initialize calendar
+        generateCalendar(currentMonth, currentYear);
+
+        // Mobile menu toggle
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0px)';
+        });
+
+        // Appointment actions
+        document.querySelectorAll('.confirm-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const appointmentId = this.getAttribute('data-id');
+                updateAppointmentStatus(appointmentId, 'confirmed');
+            });
+        });
+
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const appointmentId = this.getAttribute('data-id');
+                updateAppointmentStatus(appointmentId, 'cancelled');
+            });
+        });
+
+        function updateAppointmentStatus(appointmentId, status) {
+            fetch('/update-appointment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    appointment_id: appointmentId,
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error updating appointment: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating appointment');
+            });
+        }
+    </script>
+</body>
+</html>
